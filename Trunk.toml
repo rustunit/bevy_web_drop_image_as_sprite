@@ -1,0 +1,6 @@
+[build]
+public_url = "./"
+dist = "docs"
+
+[serve]
+port = 8080

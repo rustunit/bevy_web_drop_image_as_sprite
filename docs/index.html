@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Demo</title>
+  
+<link rel="modulepreload" href="./bevy_web_drop_image_as_sprite-9712694e1a89ec90.js" crossorigin=anonymous integrity="sha384-04bDe/v2Qy8wTrlzk7jas6TqcmIz1+wU709W9e7v/pi/Hg6Onv9GLvdPjdW/k2TS"><link rel="preload" href="./bevy_web_drop_image_as_sprite-9712694e1a89ec90_bg.wasm" crossorigin=anonymous integrity="sha384-GXQ2w16PpTyC0/wuszEzYjnJycRgpTE/wTC8hyUvQ7POT7qNI0rPQLpnsRVqr1/m" as="fetch" type="application/wasm"></head>
+
+<body>
+  
+<script type="module" nonce="bH+qpWfYQO1VN+q7xo7j0w==">
+import init, * as bindings from './bevy_web_drop_image_as_sprite-9712694e1a89ec90.js';
+const wasm = await init('./bevy_web_drop_image_as_sprite-9712694e1a89ec90_bg.wasm');
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+
+  <h1>
+    Bevy Web Drop Image as Sprite Demo
+  </h1>
+
+  <p>
+    Drop a png file into the canvas below and it will be transferred to bevy to be loaded and used as the moving sprite:
+  </p>
+
+  <canvas id="bevy">
+    Javascript and support for canvas is required
+  </canvas>
+</body>
+
+</html>

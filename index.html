@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Demo</title>
+  <link data-trunk rel="copy-dir" href="./assets/" />
+</head>
+
+<body>
+  <link data-trunk rel="rust" href="Cargo.toml" data-wasm-opt="z" data-bin="bevy_web_drop_image_as_sprite"
+    data-cargo-no-default-features="true" />
+
+  <h1>
+    Bevy Web Drop Image as Sprite Demo
+  </h1>
+
+  <p>
+    Drop a png file into the canvas below and it will be transferred to bevy to be loaded and used as the moving sprite:
+  </p>
+
+  <canvas id="bevy">
+    Javascript and support for canvas is required
+  </canvas>
+</body>
+
+</html>

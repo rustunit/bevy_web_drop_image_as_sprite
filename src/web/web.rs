@@ -69,7 +69,11 @@ pub fn register_drop(id: &str) -> Option<()> {
 
                         info!("drop file read: {}", file_info.name());
 
-                        send_event(crate::web::WebEvent::Drop(file_info.name(), data));
+                        send_event(crate::web::WebEvent::Drop {
+                            name: file_info.name(),
+                            data,
+                            mime_type: file_info.type_(),
+                        });
                     })
                     .forget();
                 }

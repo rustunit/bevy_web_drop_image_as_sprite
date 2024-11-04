@@ -1,13 +1,11 @@
 mod web;
 
-use std::path::Path;
-
 use bevy::{
-    asset::{
-        io::{embedded::EmbeddedAssetRegistry, AssetSourceId},
-        AssetPath,
-    },
     prelude::*,
+    render::{
+        render_asset::RenderAssetUsages,
+        texture::{CompressedImageFormats, ImageType},
+    },
     window::WindowResolution,
 };
 use web::{WebEvent, WebPlugin};
@@ -39,10 +37,6 @@ fn main() {
         })
         .add_systems(Startup, setup)
         .add_systems(Update, sprite_movement)
-        .add_systems(
-            Update,
-            process_image_asset_events.run_if(on_event::<AssetEvent<Image>>()),
-        )
         .observe(process_web_events)
         .run();
 }
@@ -84,41 +78,33 @@ fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, 
 
 fn process_web_events(
     trigger: Trigger<WebEvent>,
-    embedded: Res<EmbeddedAssetRegistry>,
     assets: Res<AssetServer>,
     mut sprite: Query<&mut Handle<Image>, With<Sprite>>,
 ) {
     let e = trigger.event();
     match e {
-        WebEvent::Drop(name, data) => {
-            let path = Path::new("embedded_asset").join(name);
+        WebEvent::Drop {
+            data,
+            mime_type,
+            name,
+        } => {
+            let Ok(image) = Image::from_buffer(
+                data,
+                ImageType::MimeType(&mime_type),
+                CompressedImageFormats::default(),
+                true,
+                bevy::render::texture::ImageSampler::Default,
+                RenderAssetUsages::RENDER_WORLD,
+            ) else {
+                info!("could not load image: '{name}' of type {mime_type}");
+                return;
+            };
 
-            embedded.insert_asset(
-                format!("embedded://{:?}", &path).into(),
-                &path,
-                data.clone(),
-            );
+            let handle = assets.add(image);
 
-            let asset_path =
-                AssetPath::from_path(&path).with_source(AssetSourceId::from("embedded"));
-
-            let handle = assets.load::<Image>(asset_path);
-
-            info!("image load triggered: {}", handle.id());
+            info!("loaded image: '{name}'");
 
             *sprite.single_mut() = handle;
-        }
-    }
-}
-
-// this will show us in the log whether the asset server had to add an image, modify or remove unused ones
-fn process_image_asset_events(mut events: EventReader<AssetEvent<Image>>) {
-    for e in events.read() {
-        match e {
-            AssetEvent::Added { id } => info!("img added: {id}"),
-            AssetEvent::Modified { id } => info!("img modified: {id}"),
-            AssetEvent::Removed { id } => info!("img removed: {id}"),
-            _ => (),
         }
     }
 }

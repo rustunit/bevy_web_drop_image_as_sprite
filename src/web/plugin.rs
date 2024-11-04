@@ -3,7 +3,11 @@ use bevy::prelude::*;
 #[allow(dead_code)]
 #[derive(Event, Clone, Debug)]
 pub enum WebEvent {
-    Drop(String, Vec<u8>),
+    Drop {
+        name: String,
+        data: Vec<u8>,
+        mime_type: String,
+    },
 }
 
 pub struct WebPlugin {

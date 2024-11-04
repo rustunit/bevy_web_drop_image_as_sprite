@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-#[allow(dead_code)]
+#[cfg_attr(not(target_family = "wasm"), allow(dead_code))]
 #[derive(Event, Clone, Debug)]
 pub enum WebEvent {
     Drop {
@@ -11,10 +11,11 @@ pub enum WebEvent {
 }
 
 pub struct WebPlugin {
-    #[allow(dead_code)]
+    #[cfg_attr(not(target_family = "wasm"), allow(dead_code))]
     pub dom_drop_element_id: String,
 }
 impl Plugin for WebPlugin {
+    #[cfg_attr(not(target_family = "wasm"), allow(unused_variables))]
     fn build(&self, app: &mut App) {
         #[cfg(target_family = "wasm")]
         {

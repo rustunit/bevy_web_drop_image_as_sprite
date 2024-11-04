@@ -90,7 +90,7 @@ fn process_web_events(
         } => {
             let Ok(image) = Image::from_buffer(
                 data,
-                ImageType::MimeType(&mime_type),
+                ImageType::MimeType(mime_type),
                 CompressedImageFormats::default(),
                 true,
                 bevy::render::texture::ImageSampler::Default,

@@ -18,7 +18,7 @@ bevy = { version = "0.14", default-features = false, features = [
     "webgl2",
     "png",
 ] }
-bevy_channel_trigger = "0.1.1"
+bevy_channel_trigger = "0.2.0"
 
 [target.'cfg(target_family = "wasm")'.dependencies.gloo]
 version = "0.11"
@@ -27,16 +27,8 @@ features = ["utils"]
 [target.'cfg(target_family = "wasm")'.dependencies.web-sys]
 version = "0.3"
 features = [
-    "HtmlElement",
-    "HtmlInputElement",
-    "Window",
-    "Document",
-    "Element",
-    "EventTarget",
-    "Event",
     "DataTransfer",
     "DataTransferItem",
     "DataTransferItemList",
     "DragEvent",
-    "FileList",
 ]

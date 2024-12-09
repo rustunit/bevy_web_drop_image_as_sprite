@@ -1,8 +1,7 @@
+use crate::web::channel::send_event;
 use bevy::prelude::*;
 use gloo::events::{EventListener, EventListenerOptions};
 use web_sys::{wasm_bindgen::JsCast, DragEvent, FileReader};
-
-use crate::web::channel::send_event;
 
 pub fn register_drop(id: &str) -> Option<()> {
     let doc = gloo::utils::document();
@@ -47,7 +46,7 @@ pub fn register_drop(id: &str) -> Option<()> {
 
             for idx in 0..files.length() {
                 let file = files.get(idx).expect("invalid item");
-                let file_info = file.get_as_file().expect("not a file").unwrap();
+                let file_info = file.get_as_file().ok().flatten().unwrap();
 
                 info!(
                     "file[{idx}] = '{}' - {} - {} b",

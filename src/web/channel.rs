@@ -5,14 +5,11 @@ use super::WebEvent;
 
 static SENDER: OnceLock<Option<ChannelSender<WebEvent>>> = OnceLock::new();
 
-//TODO: error logging
 pub fn send_event(e: WebEvent) {
-    SENDER
-        .get()
-        .expect("invalid sender lock")
-        .as_ref()
-        .expect("sender not found")
-        .send(e);
+    let Some(sender) = SENDER.get().map(Option::as_ref).flatten() else {
+        return bevy::log::error!("`WebPlugin` not installed correctly (no sender found)");
+    };
+    sender.send(e);
 }
 
 pub fn set_sender(sender: ChannelSender<WebEvent>) {

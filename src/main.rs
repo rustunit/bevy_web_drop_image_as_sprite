@@ -1,18 +1,15 @@
 mod web;
 
 use bevy::{
+    image::{CompressedImageFormats, ImageSampler, ImageType},
     prelude::*,
-    render::{
-        render_asset::RenderAssetUsages,
-        texture::{CompressedImageFormats, ImageType},
-    },
+    render::render_asset::RenderAssetUsages,
     window::WindowResolution,
 };
 use web::{WebEvent, WebPlugin};
 
 fn main() {
     App::new()
-        .insert_resource(Msaa::Off)
         .add_plugins(
             DefaultPlugins
                 .set(AssetPlugin {
@@ -37,7 +34,7 @@ fn main() {
         })
         .add_systems(Startup, setup)
         .add_systems(Update, sprite_movement)
-        .observe(process_web_events)
+        .add_observer(process_web_events)
         .run();
 }
 
@@ -49,13 +46,10 @@ enum Direction {
 
 // start by loading an image from the assets folder we ship with
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn((Camera2d, Msaa::Off));
     commands.spawn((
-        SpriteBundle {
-            texture: asset_server.load("icon.png"),
-            transform: Transform::from_xyz(-10., 0., 0.),
-            ..default()
-        },
+        Transform::from_xyz(-10., 0., 0.),
+        Sprite::from_image(asset_server.load("icon.png")),
         Direction::Up,
     ));
 }
@@ -64,8 +58,8 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, &mut Transform)>) {
     for (mut logo, mut transform) in &mut sprite_position {
         match *logo {
-            Direction::Up => transform.translation.y += 150. * time.delta_seconds(),
-            Direction::Down => transform.translation.y -= 150. * time.delta_seconds(),
+            Direction::Up => transform.translation.y += 150. * time.delta_secs(),
+            Direction::Down => transform.translation.y -= 150. * time.delta_secs(),
         }
 
         if transform.translation.y > 100. {
@@ -79,7 +73,7 @@ fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, 
 fn process_web_events(
     trigger: Trigger<WebEvent>,
     assets: Res<AssetServer>,
-    mut sprite: Query<&mut Handle<Image>, With<Sprite>>,
+    mut sprite: Query<&mut Sprite>,
 ) {
     let e = trigger.event();
     match e {
@@ -93,7 +87,7 @@ fn process_web_events(
                 ImageType::MimeType(mime_type),
                 CompressedImageFormats::default(),
                 true,
-                bevy::render::texture::ImageSampler::Default,
+                ImageSampler::Default,
                 RenderAssetUsages::RENDER_WORLD,
             ) else {
                 info!("could not load image: '{name}' of type {mime_type}");
@@ -104,7 +98,7 @@ fn process_web_events(
 
             info!("loaded image: '{name}'");
 
-            *sprite.single_mut() = handle;
+            sprite.single_mut().image = handle;
         }
     }
 }

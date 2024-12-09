@@ -1,0 +1,2 @@
+build:
+    trunk build --release

@@ -76,29 +76,27 @@ fn process_web_events(
     mut sprite: Query<&mut Sprite>,
 ) {
     let e = trigger.event();
-    match e {
-        WebEvent::Drop {
-            data,
-            mime_type,
-            name,
-        } => {
-            let Ok(image) = Image::from_buffer(
-                data,
-                ImageType::MimeType(mime_type),
-                CompressedImageFormats::default(),
-                true,
-                ImageSampler::Default,
-                RenderAssetUsages::RENDER_WORLD,
-            ) else {
-                info!("could not load image: '{name}' of type {mime_type}");
-                return;
-            };
+    let WebEvent::Drop {
+        data,
+        mime_type,
+        name,
+    } = e;
 
-            let handle = assets.add(image);
+    let Ok(image) = Image::from_buffer(
+        data,
+        ImageType::MimeType(mime_type),
+        CompressedImageFormats::default(),
+        true,
+        ImageSampler::Default,
+        RenderAssetUsages::RENDER_WORLD,
+    ) else {
+        info!("could not load image: '{name}' of type {mime_type}");
+        return;
+    };
 
-            info!("loaded image: '{name}'");
+    let handle = assets.add(image);
 
-            sprite.single_mut().image = handle;
-        }
-    }
+    info!("loaded image: '{name}'");
+
+    sprite.single_mut().image = handle;
 }

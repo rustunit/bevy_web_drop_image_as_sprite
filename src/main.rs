@@ -73,7 +73,7 @@ fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, 
 fn process_web_events(
     trigger: Trigger<WebEvent>,
     assets: Res<AssetServer>,
-    mut sprite: Query<&mut Sprite>,
+    mut sprite: Single<&mut Sprite>,
 ) {
     let e = trigger.event();
     let WebEvent::Drop {
@@ -98,5 +98,5 @@ fn process_web_events(
 
     info!("loaded image: '{name}'");
 
-    sprite.single_mut().image = handle;
+    sprite.image = handle;
 }

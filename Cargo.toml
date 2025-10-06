@@ -40,6 +40,3 @@ features = [
 [target.'cfg(target_family = "wasm")'.dependencies.getrandom]
 version = "0.3"
 features = ["wasm_js"]
-
-[patch.crates-io]
-bevy_channel_trigger = { git="https://github.com/rustunit/bevy_channel_trigger.git", branch="bevy-0.17" }

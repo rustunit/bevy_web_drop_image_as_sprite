@@ -414,7 +414,8 @@ dependencies = [
 [[package]]
 name = "bevy_channel_trigger"
 version = "0.5.0"
-source = "git+https://github.com/rustunit/bevy_channel_trigger.git?branch=bevy-0.17#71d9169ea2aa92a4bfb37c73ba359fa4d9bc4028"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "611dce9d64153b867c4e67742307e17b178fcc611e9faa564bce17ac24ddb300"
 dependencies = [
  "bevy_app",
  "bevy_ecs",

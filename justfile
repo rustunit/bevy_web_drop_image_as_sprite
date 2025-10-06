@@ -6,4 +6,4 @@ serve:
     RUSTFLAGS='--cfg getrandom_backend="wasm_js"' trunk serve
 
 build:
-    trunk build --release
+    RUSTFLAGS='--cfg getrandom_backend="wasm_js"' trunk build --release

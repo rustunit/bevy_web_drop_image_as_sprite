@@ -1,9 +1,9 @@
 mod web;
 
 use bevy::{
+    asset::RenderAssetUsages,
     image::{CompressedImageFormats, ImageSampler, ImageType},
     prelude::*,
-    render::render_asset::RenderAssetUsages,
     window::WindowResolution,
 };
 use web::{WebEvent, WebPlugin};
@@ -23,7 +23,7 @@ fn main() {
                         canvas: Some("#bevy".to_owned()),
                         // Tells wasm not to override default event handling, like F5 and Ctrl+R
                         prevent_default_event_handling: false,
-                        resolution: WindowResolution::new(500.0, 500.0),
+                        resolution: WindowResolution::new(500, 500),
                         ..default()
                     }),
                     ..default()
@@ -71,7 +71,7 @@ fn sprite_movement(time: Res<Time>, mut sprite_position: Query<(&mut Direction, 
 }
 
 fn process_web_events(
-    trigger: Trigger<WebEvent>,
+    trigger: On<WebEvent>,
     assets: Res<AssetServer>,
     mut sprite: Single<&mut Sprite>,
 ) {

@@ -9,8 +9,13 @@
 </head>
 
 <body>
-  <link data-trunk rel="rust" href="Cargo.toml" data-wasm-opt="z" data-bin="bevy_web_drop_image_as_sprite"
-    data-cargo-no-default-features="true" />
+  <link
+      data-trunk rel="rust"
+      href="Cargo.toml"
+      data-wasm-opt="z"
+      data-wasm-opt-params="--enable-bulk-memory --enable-nontrapping-float-to-int"
+      data-bin="bevy_web_drop_image_as_sprite"
+      data-cargo-no-default-features="true" />
 
   <h1>
     Bevy Web Drop Image as Sprite Demo

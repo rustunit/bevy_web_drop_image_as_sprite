@@ -9,5 +9,5 @@ cargo install trunk
 
 run locally. trunk will build the wasm using wasm-bindgen and run a local server to test it:
 ```sh
-just serve
+trunk serve
 ```

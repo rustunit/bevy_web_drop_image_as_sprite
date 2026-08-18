@@ -75,12 +75,11 @@ fn process_web_events(
     assets: Res<AssetServer>,
     mut sprite: Single<&mut Sprite>,
 ) {
-    let e = trigger.event();
     let WebEvent::Drop {
         data,
         mime_type,
         name,
-    } = e;
+    } = &*trigger;
 
     let Ok(image) = Image::from_buffer(
         data,

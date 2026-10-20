@@ -1,8 +1,7 @@
 [package]
-name = "bevy_web_drop_image_as_sprite"
+name = "bevy-web-drop-image-as-sprite"
 version = "0.1.0"
 edition = "2021"
-authors = ["Rustunit <mail@rustunit.com>"]
 
 [profile.release]
 opt-level = "z"
@@ -11,14 +10,16 @@ codegen-units = 1
 strip = true
 
 [dependencies]
-bevy = { version = "0.19", default-features = false, features = [
+bevy = { version = "0.20", default-features = false, features = [
     "bevy_winit",
     "bevy_sprite_render",
     "bevy_log",
     "webgl2",
     "png",
 ] }
-bevy_channel_trigger = "0.7.0"
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+bevy_channel_trigger = "0.8.0"
 
 # Default features drag in `gloo-history` -> `getrandom`, which needs a
 # `getrandom_backend` rustflag on wasm32-unknown-unknown.
